@@ -11,17 +11,17 @@ def pairwise(iterable):
     next(b, None)
     return zip(a, b)
 
-username = '***REMOVED***'
+username = ''
 scope = 'playlist-read-collaborative'
-user = '***REMOVED***'
+user = ''
 song_list = []
 hall_of_fame = []
 
-token = util.prompt_for_user_token(username, scope, client_id='***REMOVED***', client_secret='***REMOVED***', redirect_uri='http://localhost/')
+token = util.prompt_for_user_token(username, scope, client_id='', client_secret='', redirect_uri='http://localhost/')
 
 if token:
     sp = spotipy.Spotify(auth=token)   
-    results = sp.user_playlist_tracks(user, playlist_id='***REMOVED***', fields="items.track.name,items.added_at,next")
+    results = sp.user_playlist_tracks(user, playlist_id='', fields="items.track.name,items.added_at,next")
     song_list = song_list + results['items']
 
     while(results['next']!=None):
