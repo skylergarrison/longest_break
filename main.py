@@ -3,6 +3,7 @@ import spotipy.util as util
 import calendar
 from datetime import datetime, timedelta
 import itertools
+import csv
 
 def pairwise(iterable):
     "s -> (s0,s1), (s1,s2), (s2, s3), ..."
@@ -42,16 +43,23 @@ for i in pairwise(song_list):
 
     diff = b['added_at'] - a['added_at']
     t = timedelta(seconds=diff)
-    print_diff = "Time to Keep: {}m-{}d {}".format(t.days/30, t.days%30, timedelta(seconds=t.seconds))
-    distance = a['track']['name'] + '->' + b['track']['name'] + '=' + print_diff
+    print_diff = "Elapsed time: {}m-{}d {}".format(t.days/30, t.days%30, timedelta(seconds=t.seconds))
+    distance_songs = a['track']['name'] + ' -> ' + b['track']['name']
 
     if a['track']['name']!=b['track']['name'] and diff > longest_time:
         longest_time = diff
-        offending_songs = distance
+        offending_songs = distance_songs
 
-    hall_of_fame.append((distance, diff))
+    hall_of_fame.append((distance_songs, print_diff, diff))
 
-hall_of_fame.sort(key=lambda tup: tup[1])
+hall_of_fame.sort(key=lambda tup: tup[2])
 
-for i in hall_of_fame:
-    print(i)
+with open('hall_of_fame.csv', mode='w') as interval_file:
+    for i in hall_of_fame:
+        print(i)
+        interval_writer = csv.writer(interval_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        try:
+            interval_writer.writerow([i[0], i[1], i[2]])
+        except:
+            interval_writer.writerow(['Oops! Unicode error!', i[1], i[2]])
+    
