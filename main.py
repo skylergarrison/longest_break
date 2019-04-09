@@ -29,18 +29,14 @@ else:
     print("Can't get token for", username)
 
 for song in song_list:
-
-    print(song)
     datetime_object = datetime.strptime(song['added_at'], '%Y-%m-%dT%H:%M:%SZ')
     song['added_at'] = calendar.timegm(datetime_object.utctimetuple())
-    print(song)
 
 longest_time = 0
 offending_songs = ''
 hall_of_fame = []
 
 for i in pairwise(song_list):
-    print(i)
     a = i[0]
     b = i[1]
 
@@ -48,7 +44,6 @@ for i in pairwise(song_list):
     t = timedelta(seconds=diff)
     print_diff = "Time to Keep: {}m-{}d {}".format(t.days/30, t.days%30, timedelta(seconds=t.seconds))
     distance = a['track']['name'] + '->' + b['track']['name'] + '=' + print_diff
-    print(distance)
 
     if a['track']['name']!=b['track']['name'] and diff > longest_time:
         longest_time = diff
