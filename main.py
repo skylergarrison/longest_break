@@ -15,6 +15,7 @@ username = '***REMOVED***'
 scope = 'playlist-read-collaborative'
 user = '***REMOVED***'
 song_list = []
+hall_of_fame = []
 
 token = util.prompt_for_user_token(username, scope, client_id='***REMOVED***', client_secret='***REMOVED***', redirect_uri='http://localhost/')
 
@@ -33,10 +34,6 @@ for song in song_list:
     datetime_object = datetime.strptime(song['added_at'], '%Y-%m-%dT%H:%M:%SZ')
     song['added_at'] = calendar.timegm(datetime_object.utctimetuple())
 
-longest_time = 0
-offending_songs = ''
-hall_of_fame = []
-
 for i in pairwise(song_list):
     a = i[0]
     b = i[1]
@@ -45,10 +42,6 @@ for i in pairwise(song_list):
     t = timedelta(seconds=diff)
     print_diff = "Elapsed time: {}m-{}d {}".format(t.days/30, t.days%30, timedelta(seconds=t.seconds))
     distance_songs = a['track']['name'] + ' -> ' + b['track']['name']
-
-    if a['track']['name']!=b['track']['name'] and diff > longest_time:
-        longest_time = diff
-        offending_songs = distance_songs
 
     hall_of_fame.append((distance_songs, print_diff, diff))
 
